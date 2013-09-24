@@ -147,10 +147,11 @@ public class PlayerScript : MonoBehaviour
                 mJumpCurrentTime = 0f;
                 mIsOnFloor = false;
 
-                if (otherPlayer.IsInvincible == false)
+                bool died = otherPlayer.Die(); ;
+
+                if(died)
                 {
                     Debug.Log("Player " + PlayerIndex + " killed " + "Player " + otherPlayer.PlayerIndex);
-                    otherPlayer.Die();
 
                     // Points!
                     GameScript.PlayerScores[PlayerIndex] = GameScript.PlayerScores[PlayerIndex] + 1;                 
@@ -159,19 +160,25 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
-    public void Die()
+    public bool Die()
     {
-        // BLOOD
-        mParticles.Play(transform.position);
+        if (IsInvincible == false)
+        {
+            // BLOOD
+            mParticles.Play(transform.position);
 
-        // Sound
-        SoundBankScript.Instance.Play(SoundBankScript.Instance.Die);
+            // Sound
+            SoundBankScript.Instance.Play(SoundBankScript.Instance.Die);
 
-        // Respawn safely
-        mInvincibleCurrentTime = InvincibleTime;
-        RandomSpawn();
+            // Respawn safely
+            mInvincibleCurrentTime = InvincibleTime;
+            RandomSpawn();
 
-        DiedThisFrame = true;
+            DiedThisFrame = true;
+
+            return true;
+        }
+        return false;
     }
 
     public void Bump()
