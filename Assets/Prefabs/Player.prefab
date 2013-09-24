@@ -165,8 +165,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerIndex: 1
   Speed: 12
-  JumpMaxTime: .75
-  JumpImpulsion: 1200
+  JumpMaxTime: 1
+  JumpImpulsion: 1800
   InvincibleTime: 1.5
 --- !u!114 &11400002
 MonoBehaviour:
