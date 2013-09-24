@@ -11,8 +11,6 @@ public class SpikesScript : MonoBehaviour
         {
             // Only if on top, so just check if the player if falling
             // Remember the player may jump while in spikes and he shouldn't die
-            Debug.Log(player.rigidbody.velocity);
-
             if (player.rigidbody.velocity.y < -1f)
             {
                 Debug.Log("Player " + player.PlayerIndex + " died on spikes!");

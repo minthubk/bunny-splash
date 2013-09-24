@@ -80,7 +80,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Direction: {x: 0, y: 0, z: 0}
   Amplitude: 4
-  Speed: 1
+  Speed: 2
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

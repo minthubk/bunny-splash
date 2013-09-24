@@ -56,7 +56,7 @@ public class GameScript : MonoBehaviour
             if (currentStartCooldown != cooldownAsIntBEfore)
             {
                 // A full second as passed
-                SoundBankScript.Instance.Play(SoundBankScript.Instance.Start);
+                SoundBankScript.Instance.Play(SoundBankScript.Instance.Eat[Random.Range(0, SoundBankScript.Instance.Eat.Count)]);
 
                 if (currentStartCooldown > 0)
                 {

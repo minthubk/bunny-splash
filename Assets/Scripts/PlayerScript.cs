@@ -94,10 +94,21 @@ public class PlayerScript : MonoBehaviour
         transform.Translate(movement);
     }
 
+    void OnTriggerEnter(Collider otherCollider)
+    {
+        // Coin?
+        CoinScript coin = otherCollider.gameObject.GetComponent<CoinScript>();
+
+        if (coin != null)
+        {
+            //TODO
+            SoundBankScript.Instance.Play(SoundBankScript.Instance.Eat[Random.Range(0, SoundBankScript.Instance.Eat.Count)]);
+            GameObject.Destroy(coin.gameObject);
+        }
+    }
+
     void OnCollisionEnter(Collision collisionInfo)
     {
-        Debug.Log("Player " + PlayerIndex + " collides " + collisionInfo.gameObject);
-
         // Find if we are on top of something
         bool isOnTop = false;
         if (collider.bounds.min.y > collisionInfo.collider.bounds.center.y)
