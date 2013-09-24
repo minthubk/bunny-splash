@@ -22,6 +22,14 @@ public class BumperScript : MonoBehaviour
             if (mReloadingTime <= 0f)
             {
                 mReloadingTime = 0f;
+
+                // Sprite 1
+                renderer.material.mainTextureOffset = new Vector2(0 * renderer.material.mainTextureScale.x, 0);
+            }
+            else
+            {
+                // Sprite 2
+                renderer.material.mainTextureOffset = new Vector2(1 * renderer.material.mainTextureScale.x, 0);
             }
         }
     }
@@ -30,6 +38,8 @@ public class BumperScript : MonoBehaviour
     {
         if (mReloadingTime == 0f)
         {
+            mReloadingTime = ReloadingRate;
+
             if (otherCollider.gameObject.rigidbody != null)
             {
                 // Sound
