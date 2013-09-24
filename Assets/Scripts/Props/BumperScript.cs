@@ -49,7 +49,6 @@ public class BumperScript : MonoBehaviour
                 PlayerScript player = otherCollider.gameObject.GetComponent<PlayerScript>();
                 if (player != null)
                 {
-                    Debug.Log(player.gameObject.rigidbody.velocity);
                     player.Bump();
                 }
             }

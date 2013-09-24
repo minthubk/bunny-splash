@@ -171,6 +171,9 @@ public class PlayerScript : MonoBehaviour
 
     public void RandomSpawn()
     {
+        // Cancel velocity
+        rigidbody.velocity = Vector3.zero;
+
         // Get a random location on the map
         Vector3 randomLoc = new Vector3(
             Random.Range(-10, 10),
