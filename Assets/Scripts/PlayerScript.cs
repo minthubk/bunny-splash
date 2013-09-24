@@ -163,6 +163,12 @@ public class PlayerScript : MonoBehaviour
         DiedThisFrame = true;
     }
 
+    public void Bump()
+    {
+        mJumpCurrentTime = 0f;
+        mIsOnFloor = false;
+    }
+
     public void RandomSpawn()
     {
         // Get a random location on the map
