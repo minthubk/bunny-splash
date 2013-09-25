@@ -18,6 +18,7 @@ public class GameScript : MonoBehaviour
 
     private bool mIsStarted, mIsEnded;
     private float mStartCooldown;
+    private float mEndCooldown;
 
     void Start()
     {
@@ -103,11 +104,18 @@ public class GameScript : MonoBehaviour
         //---------------------------------------------------------------
         if (mIsEnded)
         {
-            // Wait for a reset
-            if (Input.anyKey)
+            if (mEndCooldown > 0f)
             {
-                // Restart
-                Initialize();
+                mEndCooldown -= Time.deltaTime;
+            }
+            else
+            {
+                // Wait for a reset
+                if (Input.anyKey)
+                {
+                    // Restart
+                    Initialize();
+                }
             }
         }
     }
@@ -149,6 +157,8 @@ public class GameScript : MonoBehaviour
     public void EndFight()
     {
         Debug.Log("GAME OVER");
+
+        mEndCooldown = 2f;
 
         var players = GameObject.FindObjectsOfType(typeof(PlayerScript));
         foreach (var p in players)
