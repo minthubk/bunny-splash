@@ -90,8 +90,14 @@ public class PlayerScript : MonoBehaviour
             x * Speed * Time.deltaTime,
             0,
             0);
-
-        transform.Translate(movement);
+        
+        // Add inertia
+        // But limit to 5
+        if (Mathf.Abs(rigidbody.velocity.x) < 5)
+        {
+            rigidbody.AddForce(movement * 100);
+        }
+        rigidbody.MovePosition(rigidbody.position + movement);
     }
 
     void OnTriggerEnter(Collider otherCollider)
