@@ -11,6 +11,7 @@ public class PlayerScript : MonoBehaviour
     public float InvincibleTime = 1.5f;
 
     private ParticleControlScript mParticles;
+    private AnimationScript mAnimation;
     private TextMesh mName;
     private bool mIsJumping;
     private bool mIsOnFloor;
@@ -24,6 +25,9 @@ public class PlayerScript : MonoBehaviour
     {
         mParticles = GetComponent<ParticleControlScript>();
         if (mParticles == null) Debug.LogError("Missing blood!");
+
+        mAnimation = GetComponent<AnimationScript>();
+        if (mAnimation == null) Debug.LogError("Missing animation script!");
 
         mName = GetComponentInChildren<TextMesh>();
         if (mName == null) Debug.LogError("Missing text for name!");
@@ -57,6 +61,8 @@ public class PlayerScript : MonoBehaviour
         float x = Input.GetAxis("Horizontal_Player" + PlayerIndex);
         float y = Input.GetAxis("Vertical_Player" + PlayerIndex);
 
+        bool newJump = false;
+
         // Jump!
         if (y > 0)
         {
@@ -65,6 +71,8 @@ public class PlayerScript : MonoBehaviour
             // First impulsion: take off
             if (mIsJumping == false && mIsOnFloor)
             {
+                newJump = true;
+
                 mIsJumping = true;
                 mIsOnFloor = false;
                 mJumpCurrentTime = 0f;
@@ -98,6 +106,37 @@ public class PlayerScript : MonoBehaviour
             rigidbody.AddForce(movement * 100);
         }
         rigidbody.MovePosition(rigidbody.position + movement);
+
+
+        UpdateAnimations((x != 0 || y != 0), newJump); 
+    }
+
+    private void UpdateAnimations(bool move, bool firstFrameJump)
+    {
+        if (firstFrameJump)
+        {
+
+        }
+        else if (mIsJumping)
+        {
+            // Flyin
+        }
+        else if (move)
+        {
+            // Move
+            if (mAnimation.IsPlaying("Walk") == false)
+            {
+                mAnimation.Play("Walk");
+            }
+        }
+        else
+        {
+            // Idle
+            if (mAnimation.IsPlaying("Idle") == false)
+            {
+                mAnimation.Play("Idle");
+            }
+        }
     }
 
     void OnTriggerEnter(Collider otherCollider)

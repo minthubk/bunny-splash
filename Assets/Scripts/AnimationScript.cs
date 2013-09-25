@@ -24,14 +24,18 @@ public class AnimationScript : MonoBehaviour
     public List<Animation> Animations;
 
     private Animation CurrentAnimation;
+    private bool mIsAnimated;
     private float mAnimationCooldown = 0f;
     private int mFrameIndex = 0;
     private int mAnimationLoopCount = 0;
 
-    // Update is called once per frame
+    void Awake()
+    {
+    }
+
     void Update()
     {
-        if (CurrentAnimation != null)
+        if (mIsAnimated)
         {
             bool updateSprite = false;
             mAnimationCooldown -= Time.deltaTime;
@@ -54,7 +58,10 @@ public class AnimationScript : MonoBehaviour
                     {
                         // End
                         CurrentAnimation = null;
+                        mIsAnimated = false;
                         updateSprite = false;
+
+                        CurrentAnimationEnded = true;
                     }
                 }
             }
@@ -62,8 +69,10 @@ public class AnimationScript : MonoBehaviour
             if (updateSprite)
             {
                 // Change materials UV
-                // TODO
-                //renderer.material.mainTextureOffset = new Vector2(x * renderer.material.mainTextureScale.x, z * renderer.material.mainTextureScale.y);
+                renderer.material.mainTextureOffset = new Vector2(
+                    CurrentAnimation.StartX + (mFrameIndex * CurrentAnimation.SpritesheetDirection.x * renderer.material.mainTextureScale.x),
+                    CurrentAnimation.StartY + (mFrameIndex * CurrentAnimation.SpritesheetDirection.y * renderer.material.mainTextureScale.y)
+                );
             }
         }
     }
@@ -74,6 +83,9 @@ public class AnimationScript : MonoBehaviour
     /// <param name="name"></param>
     public void Play(string name)
     {
+        Debug.Log("Animation "+name);
+
+        // Find the requested animation
         foreach (var anim in Animations)
         {
             if (anim.Name.ToLower() == name.ToLower())
@@ -89,8 +101,36 @@ public class AnimationScript : MonoBehaviour
         }
         else
         {
+            mAnimationCooldown = 0f;
+            mFrameIndex = 0;
+            mAnimationLoopCount = 0;
 
-
+            mIsAnimated = true;
+            CurrentAnimationEnded = false;
         }
     }
+
+    public bool IsPlaying(string name)
+    {
+        if (mIsAnimated && CurrentAnimation != null)
+        {
+            return (CurrentAnimation.Name.ToLower() == name.ToLower());
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Stop the current animation
+    /// </summary>
+    public void Stop()
+    {
+        if (mIsAnimated && CurrentAnimation != null)
+        {
+            CurrentAnimation = null;
+            mIsAnimated = false;
+        }
+    }
+
+    public bool CurrentAnimationEnded { get; private set; }
 }
