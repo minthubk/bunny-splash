@@ -11,6 +11,7 @@ public class GravityController : MonoBehaviour
     void Awake()
     {
         Physics.gravity = Gravity;
+        Debug.Log("Gravity has been set to: " + Gravity);
     }
 
 }
