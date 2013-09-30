@@ -6,7 +6,7 @@ public class SpikesScript : MonoBehaviour
     void OnTriggerEnter(Collider otherCollider)
     {
         // Player? KILL
-        PlayerScript player = otherCollider.gameObject.GetComponent<PlayerScript>();
+        PlatformPlayerScript player = otherCollider.gameObject.GetComponent<PlatformPlayerScript>();
         if (player != null)
         {
             // Only if on top, so just check if the player if falling

@@ -56,7 +56,7 @@ public class BumperScript : MonoBehaviour
                 otherCollider.gameObject.rigidbody.AddForce(bounce);
 
                 // if it's player, tell him
-                PlayerScript player = otherCollider.gameObject.GetComponent<PlayerScript>();
+                PlatformPlayerScript player = otherCollider.gameObject.GetComponent<PlatformPlayerScript>();
                 if (player != null)
                 {
                     player.Bump();

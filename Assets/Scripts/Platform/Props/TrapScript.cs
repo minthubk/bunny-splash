@@ -35,7 +35,7 @@ public class TrapScript : MonoBehaviour
             mReloadingTime = ReloadingRate;
 
             // Player? KILL?
-            PlayerScript player = collisionInfo.collider.gameObject.GetComponent<PlayerScript>();
+            PlatformPlayerScript player = collisionInfo.collider.gameObject.GetComponent<PlatformPlayerScript>();
             if (player != null)
             {
                 player.Die();
