@@ -44,7 +44,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.59964991, y: 1.18507195, z: 0}
+  m_LocalPosition: {x: -5.01157951, y: 2.64267588, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400002}
@@ -174,25 +174,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 100000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6e918705a87cf047a07a3e093711afc, type: 3}
+  m_Script: {fileID: 11500000, guid: 278ec34bdef5f4143bb1719a70d1023e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerIndex: 1
-  Speed: 12
-  AllowJump: 0
-  JumpMaxTime: 1
-  JumpImpulsion: 1200
-  InvincibleTime: 1.5
-  mParticles: {fileID: 0}
-  mAnimation: {fileID: 0}
-  mName: {fileID: 0}
-  mIsJumping: 0
-  mIsOnFloor: 0
-  mReboundAvailable: 0
-  mJumpCurrentTime: 0
-  mInvincibleCurrentTime: 0
-  floorLayer: 0
-  <DiedThisFrame>k__BackingField: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

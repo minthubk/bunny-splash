@@ -32,7 +32,7 @@ public class FlyingPlatformScript : MonoBehaviour
         if (distance > 0.15f)
         {
             // Move
-            Vector3 movement = Direction * Speed * Time.deltaTime;
+            Vector3 movement = Direction * Speed * GameTimeScript.DeltaTime;
             transform.Translate(movement);
         }
         else

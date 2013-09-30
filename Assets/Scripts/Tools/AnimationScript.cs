@@ -38,7 +38,7 @@ public class AnimationScript : MonoBehaviour
         if (mIsAnimated)
         {
             bool updateSprite = false;
-            mAnimationCooldown -= Time.deltaTime;
+            mAnimationCooldown -= GameTimeScript.DeltaTime;
 
             if (mAnimationCooldown <= 0)
             {

@@ -57,7 +57,7 @@ public class PlatformPlayerScript : PlayerScript
 
         if (mInvincibleCurrentTime > 0f)
         {
-            mInvincibleCurrentTime -= Time.deltaTime;
+            mInvincibleCurrentTime -= GameTimeScript.DeltaTime;
         }
 
         float x = Input.GetAxis("Horizontal_Player" + PlayerIndex);
@@ -85,19 +85,19 @@ public class PlatformPlayerScript : PlayerScript
                 }
 
                 // The jump power can be controlled on a short time
-                mJumpCurrentTime += Time.deltaTime;
+                mJumpCurrentTime += GameTimeScript.DeltaTime;
 
                 if (mJumpCurrentTime < JumpMaxTime)
                 {
                     // Add power as long as it is pressed
-                    power += JumpImpulsion * Time.deltaTime * 1.5f; // This number factor is a hack to have a nice behavior
+                    power += JumpImpulsion * GameTimeScript.DeltaTime * 1.5f; // This number factor is a hack to have a nice behavior
 
                     rigidbody.AddForce(new Vector3(0, power, 0));
                 }
         }
 
         Vector3 movement = new Vector3(
-            x * Speed * Time.deltaTime,
+            x * Speed * GameTimeScript.DeltaTime,
             0,
             0);
 

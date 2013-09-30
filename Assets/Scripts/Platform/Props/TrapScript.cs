@@ -11,7 +11,7 @@ public class TrapScript : MonoBehaviour
     {
         if (mReloadingTime > 0f)
         {
-            mReloadingTime -= Time.deltaTime;
+            mReloadingTime -= GameTimeScript.DeltaTime;
 
             if (mReloadingTime <= 0f)
             {

@@ -50,7 +50,7 @@ public class GameScript : MonoBehaviour
         if (mIsStarted == false)
         {
             int cooldownAsIntBEfore = (int)mStartCooldown;
-            mStartCooldown -= Time.deltaTime;
+            mStartCooldown -= GameTimeScript.DeltaTime;
 
             int currentStartCooldown = (int)mStartCooldown;
 
@@ -83,7 +83,7 @@ public class GameScript : MonoBehaviour
         //---------------------------------------------------------------
         if (mIsStarted && mIsEnded == false)
         {
-            Timeleft -= Time.deltaTime;
+            Timeleft -= GameTimeScript.DeltaTime;
 
             if (Timeleft <= 0f)
             {
@@ -106,7 +106,7 @@ public class GameScript : MonoBehaviour
         {
             if (mEndCooldown > 0f)
             {
-                mEndCooldown -= Time.deltaTime;
+                mEndCooldown -= GameTimeScript.DeltaTime;
             }
             else
             {
