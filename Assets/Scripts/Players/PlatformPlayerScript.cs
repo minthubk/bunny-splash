@@ -6,7 +6,6 @@ using System.Collections;
 /// </summary>
 public class PlatformPlayerScript : PlayerScript 
 {
-    public float Speed = 10f;
     public float JumpMaxTime = 1f;
     public float JumpImpulsion = 1800;
     public float InvincibleTime = 1.5f;

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EatHuntPlayerScript : PlayerScript
+public class HunterPlayerScript : PlayerScript 
 {
     void Update()
     {
@@ -13,14 +13,6 @@ public class EatHuntPlayerScript : PlayerScript
             y * Speed * GameTimeScript.DeltaTime,
             0);
 
-        // Add inertia for rabbits
-        // But limit to 5
-        if (Mathf.Abs(rigidbody.velocity.x) < 5)
-        {
-            rigidbody.AddForce(movement * 100);
-        }
-
-        rigidbody.MovePosition(rigidbody.position + movement);
-
+        transform.Translate(movement);
     }
 }
