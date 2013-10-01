@@ -1,17 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Rabbit trying to eat coins in the dark
+/// </summary>
 public class EaterPlayerScript : PlayerScript
 {
     public float iaDirectionCooldownMin = 1f, iaDirectionCooldownMax = 4f;
 
-    private bool mLaunchIA;
-    private Vector3 direction = Vector3.zero;
+    private bool mIsIALaunch;
+    private Vector3 mIADirection = Vector3.zero;
 
     private EatHuntGameScript mGame;
 
     void Start()
     {
+        IsDead = false;
+
         mGame = GameObject.FindObjectOfType(typeof(EatHuntGameScript)) as EatHuntGameScript;
         if (mGame == null)
         {
@@ -21,11 +26,11 @@ public class EaterPlayerScript : PlayerScript
 
     void Update()
     {
-        if (mLaunchIA == false)
+        if (mIsIALaunch == false)
         {
             if (mGame.IsStarted && mGame.IsEnded == false)
             {
-                mLaunchIA = true;
+                mIsIALaunch = true;
 
                 // Wait a few sec for each bot
                 StartCoroutine(
@@ -49,6 +54,9 @@ public class EaterPlayerScript : PlayerScript
         }
     }
 
+    /// <summary>
+    /// Inputs from human
+    /// </summary>
     private void UpdatePlayer()
     {
         float x = Input.GetAxis("Horizontal_Player" + PlayerIndex);
@@ -62,11 +70,14 @@ public class EaterPlayerScript : PlayerScript
         Move(movement);
     }
 
+    /// <summary>
+    /// Random movement from an "IA"
+    /// </summary>
     private void UpdateIA()
     {
         Vector3 movement = new Vector3(
-            direction.x * Speed * GameTimeScript.DeltaTime,
-            direction.y * Speed * GameTimeScript.DeltaTime,
+            mIADirection.x * Speed * GameTimeScript.DeltaTime,
+            mIADirection.y * Speed * GameTimeScript.DeltaTime,
             0);
 
         Move(movement);
@@ -94,7 +105,7 @@ public class EaterPlayerScript : PlayerScript
         while (true)
         {
             // Take a random direction
-            direction = new Vector3(
+            mIADirection = new Vector3(
                 Random.Range(-1, 2), // INTEGERS, BITCH
                 Random.Range(-1, 2),
                 0);
@@ -108,13 +119,34 @@ public class EaterPlayerScript : PlayerScript
 
     void OnTriggerEnter(Collider collider)
     {
-        // Coin?
-        CoinInFogScript coin = collider.gameObject.GetComponent<CoinInFogScript>();
-        if (coin != null)
+        if (IA == false)
         {
-            coin.EatBy(this);
+            // Coin?
+            CoinInFogScript coin = collider.gameObject.GetComponent<CoinInFogScript>();
+            if (coin != null)
+            {
+                coin.EatBy(this);
 
-            // Score up
+                // Score up
+            }
         }
     }
+
+    /// <summary>
+    /// Poor little rabbit is dead
+    /// </summary>
+    public void Die()
+    {
+        if (IsDead == false)
+        {
+            IsDead = true;
+
+            // Change sprite to a dead one
+
+            // Disable the script. Bye.
+            this.enabled = false;
+        }
+    }
+
+    public bool IsDead { get; private set; }
 }
