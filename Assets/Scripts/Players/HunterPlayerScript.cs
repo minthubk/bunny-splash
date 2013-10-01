@@ -3,6 +3,16 @@ using System.Collections;
 
 public class HunterPlayerScript : PlayerScript 
 {
+    void Start()
+    {
+        // Get Eaters
+        foreach (var e in GameObject.FindObjectsOfType(typeof(EaterPlayerScript)))
+        {
+            EaterPlayerScript eater = e as EaterPlayerScript;
+            Physics.IgnoreCollision(collider, eater.collider);
+        }
+    }
+
     void Update()
     {
         float x = Input.GetAxis("Horizontal_Player" + PlayerIndex);
@@ -22,6 +32,7 @@ public class HunterPlayerScript : PlayerScript
         CoinInFogScript coin = collider.gameObject.GetComponent<CoinInFogScript>();
         if (coin != null)
         {
+            Debug.Log("light: " + collider);
             coin.SetIlluminated(true);
         }
     }

@@ -42,20 +42,12 @@ public class EatHuntGameScript : MonoBehaviour
         for (int i = 0; i < CoinCount; i++)
         {
             Transform coin = GameObject.Instantiate(CoinPrefab) as Transform;
-            coin.position = RandomLocation();
-        }
-        for (int i = 0; i < HunterCount; i++)
-        {
-            Transform hunter = GameObject.Instantiate(HunterPrefab) as Transform;
-            hunter.position = RandomLocation();
-
-            HunterPlayerScript player = hunter.GetComponent<HunterPlayerScript>();
-            player.Initialize(i + 1, false);
+            coin.position = RandomLocation(0);
         }
         for (int i = 0; i < EaterCount; i++)
         {
             Transform eater = GameObject.Instantiate(EaterPrefab) as Transform;
-            eater.position = RandomLocation();
+            eater.position = RandomLocation(-0.1f);
 
             EaterPlayerScript player = eater.GetComponent<EaterPlayerScript>();
             player.Initialize(HunterCount + i + 1, false);
@@ -64,10 +56,20 @@ public class EatHuntGameScript : MonoBehaviour
         for (int i = 0; i < EaterIACount; i++)
         {
             Transform ia = GameObject.Instantiate(EaterPrefab) as Transform;
-            ia.position = RandomLocation();
+            ia.position = RandomLocation(-0.1f);
 
             EaterPlayerScript player = ia.GetComponent<EaterPlayerScript>();
             player.Initialize(0, true);
+        }
+
+        // Hunter AFTER eaters because they need to get ALL eaters to ignore collisions
+        for (int i = 0; i < HunterCount; i++)
+        {
+            Transform hunter = GameObject.Instantiate(HunterPrefab) as Transform;
+            hunter.position = RandomLocation(-0.2f);
+
+            HunterPlayerScript player = hunter.GetComponent<HunterPlayerScript>();
+            player.Initialize(i + 1, false);
         }
 
         // Start cooldown
@@ -118,13 +120,13 @@ public class EatHuntGameScript : MonoBehaviour
     {
     }
 
-    private Vector3 RandomLocation()
+    private Vector3 RandomLocation(float z)
     {
         // Get a random location on the map
         return new Vector3(
             Random.Range(-9, 9),
             Random.Range(-9, 9),
-            0
+            z
             );
     }
 

@@ -29,7 +29,7 @@ public class EaterPlayerScript : PlayerScript
 
                 // Wait a few sec for each bot
                 StartCoroutine(
-                    Timers.Start(Random.Range(2f, 10f), 
+                    Timers.Start(Random.Range(2f, 10f),
                     () =>
                     {
                         // Then move
@@ -78,7 +78,11 @@ public class EaterPlayerScript : PlayerScript
     /// <param name="movement"></param>
     private void Move(Vector3 movement)
     {
-        transform.Translate(movement);
+        // Kill inertia
+        rigidbody.velocity = Vector3.zero;
+
+        rigidbody.MovePosition(rigidbody.position + movement);
+
     }
 
     /// <summary>
@@ -102,12 +106,10 @@ public class EaterPlayerScript : PlayerScript
         }
     }
 
-    void OnCollisionEnter(Collision collision) 
+    void OnTriggerEnter(Collider collider)
     {
-        Debug.Log("POUET");
-
         // Coin?
-        CoinInFogScript coin = collision.collider.gameObject.GetComponent<CoinInFogScript>();
+        CoinInFogScript coin = collider.gameObject.GetComponent<CoinInFogScript>();
         if (coin != null)
         {
             coin.EatBy(this);

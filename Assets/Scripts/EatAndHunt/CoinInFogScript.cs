@@ -23,7 +23,7 @@ public class CoinInFogScript : MonoBehaviour
 
         if (IsAte && IsIlluminated)
         {
-            FadeOut();
+            StartCoroutine(FadeOut());
         }
     }
 
@@ -33,23 +33,30 @@ public class CoinInFogScript : MonoBehaviour
     /// <param name="eater"></param>
     public void EatBy(EaterPlayerScript eater)
     {
-        // Play sound
-        SoundBankScript.Instance.Play(SoundBankScript.Instance.Eat[Random.Range(0, SoundBankScript.Instance.Eat.Count)]);
-
-        IsAte = true;
-
-        // Kill too?
-        if (IsAte && IsIlluminated)
+        if (IsAte == false)
         {
-            FadeOut();
+            // Play sound
+            SoundBankScript.Instance.Play(SoundBankScript.Instance.Eat[Random.Range(0, SoundBankScript.Instance.Eat.Count)]);
+
+            IsAte = true;
+
+            // Kill too?
+            if (IsAte && IsIlluminated)
+            {
+                StartCoroutine(FadeOut());
+            }
         }
     }
 
     /// <summary>
     /// Disappear with animation
     /// </summary>
-    private void FadeOut()
+    private IEnumerator FadeOut()
     {
+        // Fade out animation
+        // TODO
+
         GameObject.DestroyObject(gameObject);
+        yield return null;
     }
 }
