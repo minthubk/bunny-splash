@@ -41,9 +41,9 @@ public class PlatformPlayerScript : PlayerScript
         mIsOnFloor = false;
     }
 
-    public override void Initialize(int playerIndex)
+    public override void Initialize(int playerIndex, bool ia)
     {
-        base.Initialize(playerIndex);
+        base.Initialize(playerIndex, ia);
 
         RandomSpawn();
 
@@ -200,7 +200,7 @@ public class PlatformPlayerScript : PlayerScript
                     Debug.Log("Player " + PlayerIndex + " killed " + "Player " + otherPlayer.PlayerIndex);
 
                     // Points!
-                    GameScript.PlayerScores[PlayerIndex] = GameScript.PlayerScores[PlayerIndex] + 1;
+                    PlatformFighterGameScript.PlayerScores[PlayerIndex] = PlatformFighterGameScript.PlayerScores[PlayerIndex] + 1;
                 }
             }
         }

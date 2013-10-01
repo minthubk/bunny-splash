@@ -6,7 +6,7 @@ using System.Collections.Generic;
 /// <summary>
 /// Game script
 /// </summary>
-public class GameScript : MonoBehaviour
+public class PlatformFighterGameScript : MonoBehaviour
 {
     public static Dictionary<int,int> PlayerScores;
 
@@ -150,7 +150,7 @@ public class GameScript : MonoBehaviour
             PlayerScores.Add(i, 0);
 
             PlayerScript script = playerTransform.gameObject.GetComponent<PlayerScript>();
-            script.Initialize(i);
+            script.Initialize(i, false);
         }
     }
 

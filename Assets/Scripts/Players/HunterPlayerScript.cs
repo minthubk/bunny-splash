@@ -15,4 +15,24 @@ public class HunterPlayerScript : PlayerScript
 
         transform.Translate(movement);
     }
+
+    void OnTriggerEnter(Collider collider)
+    {
+        // Coin?
+        CoinInFogScript coin = collider.gameObject.GetComponent<CoinInFogScript>();
+        if (coin != null)
+        {
+            coin.SetIlluminated(true);
+        }
+    }
+
+    void OnTriggerExit(Collider collider)
+    {
+        // Hunter?
+        CoinInFogScript coin = collider.gameObject.GetComponent<CoinInFogScript>();
+        if (coin != null)
+        {
+            coin.SetIlluminated(false);
+        }
+    }
 }
