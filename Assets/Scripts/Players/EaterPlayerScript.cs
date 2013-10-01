@@ -104,12 +104,19 @@ public class EaterPlayerScript : PlayerScript
     {
         while (true)
         {
-            // Take a random direction
-            mIADirection = new Vector3(
-                Random.Range(-1, 2), // INTEGERS, BITCH
-                Random.Range(-1, 2),
-                0);
-
+            if (mIADirection != Vector3.zero)
+            {
+                // Wait between each move
+                mIADirection = Vector3.zero;
+            }
+            else
+            {
+                // Take a random direction
+                mIADirection = new Vector3(
+                    Random.Range(-1, 2), // INTEGERS, BITCH
+                    Random.Range(-1, 2),
+                    0);
+            }
             float waitingTime = Random.Range(iaDirectionCooldownMin, iaDirectionCooldownMax);
 
             // Wait a random amount of time
@@ -117,17 +124,26 @@ public class EaterPlayerScript : PlayerScript
         }
     }
 
-    void OnTriggerEnter(Collider collider)
+    void OnTriggerEnter(Collider otherCollider)
     {
-        if (IA == false)
+        // Disable physics with any other rabbit
+        var otherPlayer = otherCollider.gameObject.GetComponent<PlayerScript>();
+        if (otherPlayer != null)
         {
-            // Coin?
-            CoinInFogScript coin = collider.gameObject.GetComponent<CoinInFogScript>();
-            if (coin != null)
+            Physics.IgnoreCollision(collider, otherCollider);
+        }
+        else
+        {
+            if (IA == false)
             {
-                coin.EatBy(this);
+                // Coin?
+                CoinInFogScript coin = otherCollider.gameObject.GetComponent<CoinInFogScript>();
+                if (coin != null)
+                {
+                    coin.EatBy(this);
 
-                // Score up
+                    // Score up
+                }
             }
         }
     }
