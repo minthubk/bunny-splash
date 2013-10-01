@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class HunterPlayerScript : PlayerScript
 {
@@ -7,10 +8,21 @@ public class HunterPlayerScript : PlayerScript
 
     private bool mCanFire;
     private ParticleControlScript mBlood;
+    private List<EaterPlayerScript> mHumanPlayersLeft;
+
+    private EatHuntGameScript mGame;
 
     void Start()
     {
+        mGame = GameObject.FindObjectOfType(typeof(EatHuntGameScript)) as EatHuntGameScript;
+        if (mGame == null)
+        {
+            Debug.LogError("Invalid context, there must be an EatHuntGameScript script in the scene");
+        }
+
         mCanFire = true;
+
+        mHumanPlayersLeft = new List<EaterPlayerScript>();
 
         // Get Eaters
         foreach (var e in GameObject.FindObjectsOfType(typeof(EaterPlayerScript)))
@@ -19,6 +31,11 @@ public class HunterPlayerScript : PlayerScript
 
             // Disable collision with them
             Physics.IgnoreCollision(collider, eater.collider);
+
+            if (eater.IA == false)
+            {
+                mHumanPlayersLeft.Add(eater);
+            }
         }
 
         mBlood = GetComponent<ParticleControlScript>();
@@ -76,6 +93,8 @@ public class HunterPlayerScript : PlayerScript
 
                     // DIE§§§
                     player.Die();
+
+                    mGame.RemovePlayer(player);
                 }
             }
         }

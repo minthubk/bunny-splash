@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -22,8 +23,18 @@ public class EatHuntGameScript : MonoBehaviour
     public GUIText StartText, WinnerText, TimeText;
 
     private float mTimeLeft;
+    private float mEndCooldown;
+
+    private List<CoinInFogScript> mCoinsLeft;
+    private List<EaterPlayerScript> mHumanEatersLeft;
 
     void Start()
+    {
+        Initialize();
+
+    }
+
+    private void Initialize()
     {
         mTimeLeft = TimeLeftBase;
 
@@ -37,13 +48,38 @@ public class EatHuntGameScript : MonoBehaviour
         IsStarted = false;
         IsEnded = false;
 
+        mCoinsLeft = new List<CoinInFogScript>();
+
+        // Remove all old stuff
+        //------------------------------------------------------------------------
+        foreach (var o in GameObject.FindObjectsOfType(typeof(HunterPlayerScript)))
+        {
+            HunterPlayerScript hunter = o as HunterPlayerScript;
+            GameObject.Destroy(hunter.gameObject);
+        }
+        foreach (var o in GameObject.FindObjectsOfType(typeof(EaterPlayerScript)))
+        {
+            EaterPlayerScript eater = o as EaterPlayerScript;
+            GameObject.Destroy(eater.gameObject);
+        }
+        foreach (var o in GameObject.FindObjectsOfType(typeof(CoinInFogScript)))
+        {
+            CoinInFogScript coin = o as CoinInFogScript;
+            GameObject.Destroy(coin.gameObject);
+        }
+
         // Spawn stuff
         //------------------------------------------------------------------------
         for (int i = 0; i < CoinCount; i++)
         {
             Transform coin = GameObject.Instantiate(CoinPrefab) as Transform;
             coin.position = RandomLocation(0);
+
+            mCoinsLeft.Add(coin.GetComponent<CoinInFogScript>());
         }
+
+        mHumanEatersLeft = new List<EaterPlayerScript>();
+
         for (int i = 0; i < EaterCount; i++)
         {
             Transform eater = GameObject.Instantiate(EaterPrefab) as Transform;
@@ -51,6 +87,8 @@ public class EatHuntGameScript : MonoBehaviour
 
             EaterPlayerScript player = eater.GetComponent<EaterPlayerScript>();
             player.Initialize(HunterCount + i + 1, false);
+
+            mHumanEatersLeft.Add(player);
         }
 
         for (int i = 0; i < EaterIACount; i++)
@@ -98,26 +136,93 @@ public class EatHuntGameScript : MonoBehaviour
             IsStarted = true;
 
             TimeText.enabled = true;
-
-            // End timer
-            //------------------------------------------------------------------------
-            StartCoroutine(Timers.Start(TimeLeftBase, 1f, (t2) =>
-            {
-                mTimeLeft = TimeLeftBase - t2;
-                TimeText.text = mTimeLeft.ToString("00");
-            },
-            (t2) =>
-            {
-                IsEnded = true;
-                mTimeLeft = 0;
-                WinnerText.enabled = true;
-            }));
         }));
-
     }
 
     void Update()
     {
+        // Ingame
+        //------------------------------------------------------------------------
+        if (IsStarted && IsEnded == false)
+        {
+            // Update timer
+            mTimeLeft -= GameTimeScript.DeltaTime;
+            TimeText.text = mTimeLeft.ToString("00");
+
+            // Watch for time out
+            if (mTimeLeft <= 0f)
+            {
+                End(false, false);
+            }
+
+            // Watch for a win
+            if (mCoinsLeft.Count == 0)
+            {
+                End(true, false);
+            }
+            else if (mHumanEatersLeft.Count == 0)
+            {
+                End(false, true);
+            }
+        }
+
+        // END
+        //---------------------------------------------------------------
+        if (IsEnded)
+        {
+            if (mEndCooldown > 0f)
+            {
+                mEndCooldown -= GameTimeScript.DeltaTime;
+            }
+            else
+            {
+                // Wait for a reset
+                if (Input.anyKey)
+                {
+                    // Restart
+                    Initialize();
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// End the game
+    /// </summary>
+    /// <param name="rabbits"></param>
+    /// <param name="hunters"></param>
+    public void End(bool rabbits, bool hunters)
+    {
+        IsEnded = true;
+
+        mEndCooldown = 3f;
+
+        string victoryText = "NOOBS";
+
+        if (rabbits)
+        {
+            victoryText = "RABBITS WIN";
+        }
+        if (hunters)
+        {
+            victoryText = "HUNTERS WIN";
+        }
+
+        WinnerText.text = victoryText;
+        mTimeLeft = 0;
+        WinnerText.enabled = true;
+
+        // Disable everyone
+        foreach (var o in GameObject.FindObjectsOfType(typeof(HunterPlayerScript)))
+        {
+            HunterPlayerScript hunter = o as HunterPlayerScript;
+            hunter.enabled = false;
+        }
+        foreach (var o in GameObject.FindObjectsOfType(typeof(EaterPlayerScript)))
+        {
+            EaterPlayerScript eater = o as EaterPlayerScript;
+            eater.enabled = false;
+        }
     }
 
     private Vector3 RandomLocation(float z)
@@ -130,6 +235,16 @@ public class EatHuntGameScript : MonoBehaviour
             );
     }
 
+    public void RemoveCoin(CoinInFogScript coin)
+    {
+        mCoinsLeft.Remove(coin);
+    }
+
+    public void RemovePlayer(EaterPlayerScript player)
+    {
+        mHumanEatersLeft.Remove(player);
+    }
+
     public bool IsStarted { get; private set; }
-    public bool IsEnded { get; private set; } 
+    public bool IsEnded { get; private set; }
 }

@@ -4,7 +4,7 @@ using System.Collections;
 public class GameTimeScript : MonoBehaviour
 {
     public static float DeltaTime;
-    public bool IsPaused = false;
+    public static bool IsPaused = false;
 
     void Awake()
     {

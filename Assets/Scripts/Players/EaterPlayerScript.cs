@@ -34,7 +34,7 @@ public class EaterPlayerScript : PlayerScript
 
                 // Wait a few sec for each bot
                 StartCoroutine(
-                    Timers.Start(Random.Range(2f, 10f),
+                    Timers.Start(Random.Range(1f, 5f),
                     () =>
                     {
                         // Then move
@@ -126,23 +126,17 @@ public class EaterPlayerScript : PlayerScript
 
     void OnTriggerEnter(Collider otherCollider)
     {
-        // Disable physics with any other rabbit
-        var otherPlayer = otherCollider.gameObject.GetComponent<PlayerScript>();
-        if (otherPlayer != null)
+        if (IA == false)
         {
-            Physics.IgnoreCollision(collider, otherCollider);
-        }
-        else
-        {
-            if (IA == false)
+            // Coin?
+            CoinInFogScript coin = otherCollider.gameObject.GetComponent<CoinInFogScript>();
+            if (coin != null)
             {
-                // Coin?
-                CoinInFogScript coin = otherCollider.gameObject.GetComponent<CoinInFogScript>();
-                if (coin != null)
+                if (mGame != null)
                 {
                     coin.EatBy(this);
 
-                    // Score up
+                    mGame.RemoveCoin(coin);
                 }
             }
         }
