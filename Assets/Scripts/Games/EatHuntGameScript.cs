@@ -124,7 +124,7 @@ public class EatHuntGameScript : MonoBehaviour
     {
         // Get a random location on the map
         return new Vector3(
-            Random.Range(-9, 9),
+            Random.Range(-15, 15),
             Random.Range(-9, 9),
             z
             );
